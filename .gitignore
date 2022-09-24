@@ -6,3 +6,7 @@
 data_test/
 
 anom_dicom_msk_18-09-23_WGH.ipynb
+
+data_dicom_compare.csv
+
+__pycache__/

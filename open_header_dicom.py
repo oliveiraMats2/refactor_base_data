@@ -1,6 +1,6 @@
 from datetime import date
 
-import pydicom
+import pydicom, os
 
 
 class OpenHeaderDicom:
@@ -10,35 +10,33 @@ class OpenHeaderDicom:
     def open_just_header(self, dicom_file):
         dataset = pydicom.read_file(dicom_file)
 
+        return dataset
+
+    def view_date(self, dataset):
+
         if int(dataset[(0x0008, 0x002a)].value[:4]) > 0:
             date_acquisition = dataset[(0x0008, 0x002a)].value
         else:
             date_acquisition = dataset[(0x0008, 0x0022)].value
 
-        return date_acquisition, dataset
+        year = int(date_acquisition[:4])
+        month = int(date_acquisition[4:6])
+        day = int(date_acquisition[6:8])
 
-    def view_date(self, data_acquisition):
+        return day, month, year
 
-        year = int(data_acquisition[:4])
-        month = int(data_acquisition[4:6])
-        day = int(data_acquisition[6:8])
-
-        date_acquisition2 = date(year,
-                                 month,
-                                 day)
-        return date_acquisition2
-
-    def view_id(self, data_acquisition):
-        id_sub = str(data_acquisition[(0x0010, 0x0020)].value)
+    def view_id(self, dataset):
+        id_sub = str(dataset[(0x0010, 0x0020)].value)
         id_sub = id_sub.replace('-', '')
         return id_sub
 
+    def view_image_type(self, dataset) -> str:
+        modality = dataset[(0x0008, 0x0008)].value[2]
+        return modality
 
-if __name__ == '__main__':
-    absolut_path = 'data_test'
-    file_path = '2010-03-27-14-55-CLEONICE_AP__DE_SOUZA_ALENCAR-VVBM_6min_SENSE-ENH-0040'
-    open_header_dicom = OpenHeaderDicom()
-    date_acquisition, dataset = open_header_dicom.open_just_header(f'{absolut_path}/{file_path}')
+    def view_study_description(self, dataset) -> str:
+        modality = dataset[(0x0008, 0x1030)].value
+        return modality
 
-    print(open_header_dicom.view_date(date_acquisition))
-    print(open_header_dicom.view_id(dataset))
+    def view_size_file(self, file):
+        return os.stat(file).st_size
