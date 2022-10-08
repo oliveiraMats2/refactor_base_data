@@ -13,11 +13,15 @@ class OpenHeaderDicom:
         return dataset
 
     def view_date(self, dataset):
+        try:
+            if int(dataset[(0x0008, 0x002a)].value[:4]) > 0:
+                date_acquisition = dataset[(0x0008, 0x002a)].value
+            else:
+                date_acquisition = dataset[(0x0008, 0x0022)].value
 
-        if int(dataset[(0x0008, 0x002a)].value[:4]) > 0:
-            date_acquisition = dataset[(0x0008, 0x002a)].value
-        else:
+        except:
             date_acquisition = dataset[(0x0008, 0x0022)].value
+
 
         year = int(date_acquisition[:4])
         month = int(date_acquisition[4:6])

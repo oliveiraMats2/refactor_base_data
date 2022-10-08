@@ -12,5 +12,9 @@ compare_files = CompareFiles()
 unzip_files = UnzipFiles()
 
 #dataset = open_header_dicom.open_just_header(file_path_1)
-unzip_files.open_zip_and_save()
-unzip_files.open_dicom_and_save()
+#unzip_files.open_zip_and_save()
+#unzip_files.open_zip_and_save('/media/miclab/35c55d58-b4bf-4acf-a411-306032b6ca77/Originais/Estavam em origem ate 21-03-19/')
+
+#unzip_files.open_dicom_and_save()
+
+unzip_files.open_zip_and_save('/media/miclab/35c55d58-b4bf-4acf-a411-306032b6ca77/Originais/Estavam em origem ate 21-03-19/')

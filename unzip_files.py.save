@@ -25,7 +25,7 @@ class UnzipFiles:
 
         for file_dicom in tqdm(list_dir_data_filter):
             try:
-                dir_file_dicom = f'{dir_data}{file_dicom}'
+               dir_file_dicom = f'{dir_data}{file_dicom}'
                 #print(dir_file_dicom)
 
                 dataset = self.open_header_dicom.open_just_header(dir_file_dicom)
@@ -59,9 +59,9 @@ class UnzipFiles:
             list_tmp_data = os.listdir(sub_name_file_zip)
                 
             for file_dicom in list_tmp_data:
-                try:
-                    name_file_dicom = f'{dir_data}tmp_zip/{file_dicom}'
-
+	        try:
+                    name_file_dicom = f'{dir_data}{file_dicom}'
+                    
                     dataset = self.open_header_dicom.open_just_header(name_file_dicom)
 
                     size_file = self.open_header_dicom.view_size_file(name_file_dicom)
@@ -69,14 +69,15 @@ class UnzipFiles:
                     date = self.open_header_dicom.view_date(dataset)
                     id = self.open_header_dicom.view_id(dataset)
                     image_type = self.open_header_dicom.view_image_type(dataset)
-
+                 
                     self.dict_data_frame['name_file_zip'].append(name_file_zip)
                     self.dict_data_frame['name_file_in_zip'].append(name_file_dicom)
                     self.dict_data_frame['size_file'].append(size_file)
                     self.dict_data_frame['date'].append(date)
                     self.dict_data_frame['id'].append(id)
                     self.dict_data_frame['image_type'].append(image_type)
-                    os.remove(name_file_dicom)
+
+                    #os.remove(file_dicom)
 
                 #name_file_dicom = f'{dir_data}tmp_zip/{file_zip}'
                 #name_file_dicom = name_file_dicom.replace(".zip", ".dcm")
@@ -99,7 +100,7 @@ class UnzipFiles:
                 except Exception as error_:
                     print(error_)
                     print(f'is not possible to open {name_file_dicom}')
-            
+        
         df = pd.DataFrame(self.dict_data_frame, columns=self.dict_data_frame.keys())
         df.to_csv('data_dicom_compare_zip.csv', index=False)
         #df_old = pd.read_csv('data_dicom_compare.csv')
